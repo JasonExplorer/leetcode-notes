@@ -32,6 +32,7 @@ public class MinimumPathSum {
         int rows = grid.length;
         int cols = grid[0].length;
         int[][] dp = new int[rows][cols];
+        dp[0][0] = grid[0][0];
         // 特殊情况，只有一行或者只有一列dp就是前一个路径+ grid
         for (int i =1; i < rows; i++) {
             dp[i][0] = dp[i-1][0] + grid[i][0];
@@ -43,7 +44,7 @@ public class MinimumPathSum {
         // dp[i][j] 智能上下或者左右， dp[i-1][j] 或者 dp[i][j-1] 两种移动方式， 求其中的最大值
         for (int i = 1; i < rows; i++) {
             for (int j=1; j < cols; j++) {
-                dp[i][j] = Math.max(dp[i-1][j], dp[i][j-1]) + grid[i][j];
+                dp[i][j] = Math.min(dp[i-1][j], dp[i][j-1]) + grid[i][j];
             }
         }
         return dp[rows -1][cols -1];
