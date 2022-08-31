@@ -25,14 +25,20 @@ public class BestTimeToBuyAndSellStockWithCooldown {
         }
 
         int n = prices.length;
-        // dp(i,0) 手里持有股票最大收益
-        // dp(i,1) 手里没有股票，且处于0冻期的最大收益
-        // dp(i,2) 手上没有股票，不处于0冻期的最大收益
+        // dp(i,0) 当日买入，股票最大收益
+        // dp(i,1) 当日卖出，股票最大收益
+        // dp(i,2) 当日处于冷冻期，股票最大收益
         int[][] dp = new int[n][3];
+        // 第1天是负的
         dp[0][0] = -prices[0];
+        dp[0][1] = 0;
+        dp[0][2] = 0;
         for (int i =1; i < n; i++) {
+            // 当天买入
             dp[i][0] = Math.max(dp[i-1][0], dp[i-1][2] - prices[i]);
+            // 当天卖出
             dp[i][1] = dp[i-1][0] + prices[i];
+            // 当天是冷冻期
             dp[i][2] = Math.max(dp[i-1][1], dp[i-1][2]);
         }
         return Math.max(dp[n-1][1], dp[n-1][2]);
