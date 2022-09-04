@@ -1,7 +1,6 @@
 package leecode200;
 
-import java.util.Comparator;
-import java.util.PriorityQueue;
+import java.util.*;
 
 /**
  * @author sven
@@ -40,6 +39,34 @@ public class SlidingWindowMaximum {
                 pq.poll();
             }
             res[i-k+1] = pq.peek()[0];
+        }
+        return res;
+    }
+
+    /**
+     思路：单调队列
+
+     */
+    public int[] maxSlidingWindow2(int[] nums, int k) {
+        int n = nums.length;
+        Deque<Integer> deque = new LinkedList<>();
+        for (int i =0; i < k; i++) {
+            while(!deque.isEmpty() && nums[i] >= nums[deque.peekLast()]) {
+                deque.pollLast();
+            }
+            deque.offerLast(i);
+        }
+        int[] res = new int[n -k +1];
+        res[0] = nums[deque.peekLast()];
+        for (int i = k; i< n; i++) {
+            while (!deque.isEmpty() && nums[i] >= nums[deque.peekLast()]) {
+                deque.pollLast();
+            }
+            deque.offerLast(i);
+            while(deque.peekFirst() <= i-k) {
+                deque.pollFirst();
+            }
+            res[n-k+1] = nums[deque.peekLast()];
         }
         return res;
     }
